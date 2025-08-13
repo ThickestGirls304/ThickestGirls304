@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo: Fotos & Videos</title>
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --card: #141417;
+      --text: #f5f5f7;
+      --muted: #b7b7c2;
+      --accent: #4f8cff;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: linear-gradient(180deg, #0b0b0c, #121217);
+      color: var(--text);
+    }
+
+    header {
+      padding: 28px 20px 8px;
+      text-align: center;
+    }
+    header h1 { margin: 0; font-size: 28px; font-weight: 700; }
+    header p { margin: 8px 0 0; color: var(--muted); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    /* Grid de la galería */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--card);
+      cursor: pointer;
+      outline: none;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      transition: transform .18s ease, box-shadow .18s ease, opacity .2s ease;
+    }
+    .gallery-item:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
+
+    .gallery-item img,
+    .gallery-item video {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .badge {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .caption { padding: 10px 12px; font-size: 14px; color: var(--muted); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+    }
+    .lightbox.open { display: flex; }
+
+    .viewer {
+      position: relative;
+      width: min(92vw, 1200px);
+      height: min(86vh, 820px);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+    }
+
+    .viewer .media-wrap {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #000;
+    }
+
+    .viewer img,
+    .viewer video {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .controls {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .btn {
+      pointer-events: auto;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 14px;
+      transition: transform .12s ease, background .2s ease, opacity .2s ease;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn:hover { background: rgba(255,255,255,0.14); transform: translateY(-1px); }
+
+    .btn-icon {
+      width: 44px; height: 44px; padding: 0; border-radius: 12px;
+      display: grid; place-items: center; font-size: 18px;
+    }
+
+    .btn-close { position: absolute; top: 12px; right: 12px; }
+    .btn-full { position: absolute; top: 12px; left: 12px; }
+
+    .btn-prev { margin-left: 10px; }
+    .btn-next { margin-right: 10px; }
+
+    .counter {
+      position: absolute; bottom: 12px; left: 12px;
+      padding: 6px 10px; border-radius: 10px; font-size: 13px;
+      color: var(--text);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 540px) {
+      header h1 { font-size: 22px; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .gallery-item img, .gallery-item video { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo – Fotos & Videos</h1>
+    <p>Haz clic en cualquier miniatura para verla en grande. Usa ← → para navegar.</p>
+  </header>
+
+  <div class="container">
+    <div class="gallery" id="gallery">
+      <!-- 🔁 Sustituye los src por tus archivos. Puedes duplicar estos bloques. -->
+
+      <!-- Imagen -->
+      <figure class="gallery-item" data-type="image" data-fullsrc="https://images.unsplash.com/photo-1549880338-65ddcdfd017b" tabindex="0">
+        <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=600" alt="Montañas nevadas al amanecer" loading="lazy" />
+        <figcaption class="caption">Montañas al amanecer</figcaption>
+        <span class="badge">IMG</span>
+      </figure>
+
+      <!-- Video (miniatura puede ser el propio video silenciado) -->
+      <figure class="gallery-item" data-type="video" data-fullsrc="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" tabindex="0">
+        <video src="fotos/balerio 6.jpg" muted playsinline preload="metadata"></video>
+        <figcaption class="caption">Flores en macro (video)</figcaption>
+        <span class="badge">VID</span>
+      </figure>
+
+      <!-- Otra imagen -->
+      <figure class="gallery-item" data-type="image" data-fullsrc="https://images.unsplash.com/photo-1501785888041-af3ef285b470" tabindex="0">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600" alt="Playa tropical con palmeras" loading="lazy" />
+        <figcaption class="caption">Playa tropical</figcaption>
+        <span class="badge">IMG</span>
+      </figure>
+
+      <!-- Otro video -->
+      <figure class="gallery-item" data-type="video" data-fullsrc="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" tabindex="0">
+        <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" muted playsinline preload="metadata"></video>
+        <figcaption class="caption">Flores (WebM)</figcaption>
+        <span class="badge">VID</span>
+      </figure>
+
+    </div>
+  </div>
+
+  <!-- Lightbox / Visor -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Visor de medios">
+    <div class="viewer" id="viewer">
+      <div class="media-wrap" id="mediaWrap"></div>
+
+      <div class="controls">
+        <button class="btn btn-icon btn-prev" id="btnPrev" aria-label="Anterior">&#10094;</button>
+        <button class="btn btn-icon btn-next" id="btnNext" aria-label="Siguiente">&#10095;</button>
+      </div>
+
+      <button class="btn btn-icon btn-close" id="btnClose" aria-label="Cerrar">&#10005;</button>
+      <button class="btn btn-full" id="btnFull" aria-label="Pantalla completa">Pantalla completa</button>
+      <div class="counter" id="counter">1 / 1</div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const gallery = document.getElementById('gallery');
+      const items = Array.from(gallery.querySelectorAll('.gallery-item'));
+
+      const lightbox = document.getElementById('lightbox');
+      const mediaWrap = document.getElementById('mediaWrap');
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const btnClose = document.getElementById('btnClose');
+      const btnFull = document.getElementById('btnFull');
+      const counter = document.getElementById('counter');
+      const viewer = document.getElementById('viewer');
+
+      let current = 0;
+      let touchStartX = 0;
+
+      function openLightbox(index){
+        current = index;
+        render();
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        // Focus para accesibilidad
+        btnClose.focus();
+      }
+
+      function closeLightbox(){
+        stopAnyVideo();
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      function stopAnyVideo(){
+        const v = mediaWrap.querySelector('video');
+        if (v){ v.pause(); v.currentTime = 0; }
+      }
+
+      function render(){
+        // Limpia
+        mediaWrap.innerHTML = '';
+        stopAnyVideo();
+
+        const item = items[current];
+        const type = item.dataset.type;
+        const src = item.dataset.fullsrc || item.querySelector('img,video')?.getAttribute('src');
+        const cap = item.querySelector('.caption')?.textContent || '';
+
+        let el;
+        if(type === 'video'){
+          el = document.createElement('video');
+          el.src = src;
+          el.controls = true;
+          el.autoplay = true;
+          el.playsInline = true;
+        } else {
+          el = document.createElement('img');
+          el.src = src;
+          el.alt = cap || 'Imagen';
+          el.decoding = 'async';
+        }
+        mediaWrap.appendChild(el);
+        counter.textContent = `${current + 1} / ${items.length}`;
+      }
+
+      function prev(){
+        current = (current - 1 + items.length) % items.length;
+        render();
+      }
+      function next(){
+        current = (current + 1) % items.length;
+        render();
+      }
+
+      // Click en miniaturas
+      items.forEach((node, idx) => {
+        node.addEventListener('click', () => openLightbox(idx));
+        node.addEventListener('keypress', (e) => {
+          if(e.key === 'Enter' || e.key === ' '){
+            e.preventDefault();
+            openLightbox(idx);
+          }
+        });
+      });
+
+      // Botones
+      btnPrev.addEventListener('click', prev);
+      btnNext.addEventListener('click', next);
+      btnClose.addEventListener('click', closeLightbox);
+
+      // Cerrar clicando fuera del visor
+      lightbox.addEventListener('click', (e) => {
+        if(e.target === lightbox) closeLightbox();
+      });
+
+      // Pantalla completa (Fullscreen API)
+      btnFull.addEventListener('click', async () => {
+        const el = viewer;
+        try {
+          if (!document.fullscreenElement) {
+            await el.requestFullscreen();
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch(err){
+          console.warn('Fullscreen no disponible', err);
+        }
+      });
+
+      // Teclado
+      window.addEventListener('keydown', (e) => {
+        if(!lightbox.classList.contains('open')) return;
+        if(e.key === 'Escape') closeLightbox();
+        if(e.key === 'ArrowLeft') prev();
+        if(e.key === 'ArrowRight') next();
+      });
+
+      // Gestos (swipe)
+      viewer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+      }, {passive:true});
+      viewer.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if(Math.abs(dx) > 40){ dx > 0 ? prev() : next(); }
+      });
+
+      // Mejora: rueda del ratón para pasar
+      viewer.addEventListener('wheel', (e) => {
+        if(!lightbox.classList.contains('open')) return;
+        if(Math.abs(e.deltaX) > Math.abs(e.deltaY)){
+          e.preventDefault();
+          if(e.deltaX > 0) next(); else prev();
+        }
+      }, { passive: false });
+    })();
+  </script>
+</body>
+</html>
