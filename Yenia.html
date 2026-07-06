@@ -2,128 +2,407 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brisa Soledad Barrios la mas Putita</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Yenia Rodríguez · Galería privada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* Reset de márgenes y box-sizing */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  :root{
+    --bg: #0c0b0f;
+    --surface: #16141b;
+    --surface-2: #1e1b24;
+    --text: #f2ece0;
+    --text-muted: #9b95a3;
+    --accent: #c9a876;
+    --accent-soft: rgba(201, 168, 118, 0.16);
+    --divider: rgba(255, 255, 255, 0.08);
+    --radius: 18px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  body {
-    font-family: "Segoe UI", sans-serif;
-    background: #0f0f0f;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    min-height: 100vh;
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ background:var(--bg); }
+
+  body{
+    font-family:'Inter', system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% -10%, rgba(201,168,118,0.10), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding: calc(36px + var(--safe-top)) 20px calc(48px + var(--safe-bottom));
+    -webkit-tap-highlight-color: transparent;
   }
 
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    text-align: center;
-    color: #f5f5f5;
-    letter-spacing: 1px;
+  /* ---------- Encabezado ---------- */
+  header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    max-width:520px;
+    margin:0 auto 32px;
   }
 
-  .subtitle {
-    font-size: 1rem;
-    color: #ccc;
-    margin-bottom: 25px;
+  .eyebrow{
+    font-size:0.68rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:14px;
   }
 
-  .gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    max-width: 500px;
+  h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:clamp(2.1rem, 8vw, 2.9rem);
+    letter-spacing:0.01em;
+    color:var(--text);
   }
 
-  .item {
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    background: #222;
-    border-radius: 15px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .rule{
+    width:0;
+    height:1px;
+    background:var(--accent);
+    margin:16px 0;
+    animation: draw 1.1s ease forwards 0.2s;
   }
 
-  .item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  @keyframes draw{ to{ width:64px; } }
+
+  .stat{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 16px;
+    border:1px solid var(--divider);
+    background:var(--surface);
+    border-radius:999px;
+    color:var(--text-muted);
+    font-size:0.82rem;
   }
 
-  img, video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  .stat strong{
+    font-variant-numeric: tabular-nums;
+    color:var(--accent);
+    font-weight:600;
   }
 
-  /* Adaptación para móviles pequeños */
-  @media (max-width: 400px) {
-    h1 {
-      font-size: 1.4rem;
-    }
-    .subtitle {
-      font-size: 0.9rem;
-    }
+  .stat svg{ width:14px; height:14px; flex-shrink:0; }
+
+  /* ---------- Galería ---------- */
+  .gallery{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:18px;
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+  }
+
+  @media (min-width: 640px){
+    .gallery{ grid-template-columns: repeat(2, 1fr); gap:22px; }
+  }
+  @media (min-width: 980px){
+    .gallery{ grid-template-columns: repeat(3, 1fr); gap:26px; }
+  }
+
+  .item{
+    position:relative;
+    width:100%;
+    aspect-ratio:9/16;
+    background:var(--surface);
+    border:1px solid var(--divider);
+    border-radius:var(--radius);
+    overflow:hidden;
+    cursor:pointer;
+    opacity:0;
+    transform: translateY(14px);
+    animation: rise 0.6s ease forwards;
+  }
+
+  .item:nth-child(1){ animation-delay:.05s; }
+  .item:nth-child(2){ animation-delay:.12s; }
+  .item:nth-child(3){ animation-delay:.19s; }
+  .item:nth-child(4){ animation-delay:.26s; }
+  .item:nth-child(5){ animation-delay:.33s; }
+  .item:nth-child(6){ animation-delay:.40s; }
+
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+
+  .item img, .item video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition: transform 0.5s ease;
+  }
+
+  .item:hover img, .item:hover video{ transform: scale(1.035); }
+
+  .play-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:rgba(12,11,15,0.55);
+    backdrop-filter: blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+  }
+  .play-badge svg{ width:12px; height:12px; margin-left:2px; }
+
+  .expand-hint{
+    position:absolute;
+    inset:auto 0 0 0;
+    padding:22px 14px 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+    color:rgba(255,255,255,0.85);
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    text-align:center;
+    opacity:0;
+    transition: opacity 0.25s ease;
+    pointer-events:none;
+  }
+  .item:hover .expand-hint{ opacity:1; }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(6,5,8,0.92);
+    backdrop-filter: blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    visibility:hidden;
+    transition: opacity 0.25s ease;
+    z-index:100;
+    padding: calc(20px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
+  }
+
+  .lightbox.open{ opacity:1; visibility:visible; }
+
+  .lightbox-content{
+    position:relative;
+    max-width:min(92vw, 480px);
+    max-height:100%;
+    width:100%;
+  }
+
+  .lightbox-content img,
+  .lightbox-content video{
+    width:100%;
+    max-height:82vh;
+    object-fit:contain;
+    border-radius:14px;
+    display:block;
+    background:#000;
+  }
+
+  .lb-close, .lb-prev, .lb-next{
+    position:absolute;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.06);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition: background 0.2s ease;
+  }
+  .lb-close:hover, .lb-prev:hover, .lb-next:hover{ background:rgba(255,255,255,0.14); }
+
+  .lb-close{ top:-52px; right:0; }
+  .lb-prev{ top:50%; left:-52px; transform:translateY(-50%); }
+  .lb-next{ top:50%; right:-52px; transform:translateY(-50%); }
+
+  @media (max-width: 560px){
+    .lb-close{ top:-46px; right:0; width:38px; height:38px; }
+    .lb-prev, .lb-next{ display:none; }
+  }
+
+  .lb-counter{
+    text-align:center;
+    margin-top:12px;
+    font-size:0.75rem;
+    color:var(--text-muted);
+    letter-spacing:0.05em;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:44px;
+    font-size:0.72rem;
+    color:var(--text-muted);
+    letter-spacing:0.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
   }
 </style>
 </head>
 <body>
 
-<h1>📸 Yudaily Diaz</h1>
-<div class="subtitle">215 000 visitas 👁️</div>
+<header>
+  <div class="eyebrow">Galería privada</div>
+  <h1>Yenia Rodríguez</h1>
+  <div class="rule"></div>
+  <div class="stat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+    <strong>215.000</strong> vistas
+  </div>
+</header>
 
-<div class="gallery">
-
-    <style>
-    .video-correcto {
-    transform: rotate(180deg);
-    /* Hace que los controles no roten */
-    transform-origin: center;
-    }
-    .video-correcto::-webkit-media-controls-panel {
-    transform: rotate(180deg);
-    }
-    </style>
-
-    <div class="item">
-      <video src="Fotos/Yenia 5.mp4" controls playsinline></video>
+<main class="gallery" id="gallery">
+  <div class="item" data-type="video" data-src="Fotos/Yenia 5.mp4">
+    <video src="Fotos/Yenia 5.mp4" playsinline muted preload="metadata"></video>
+    <div class="play-badge">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
     </div>
+    <div class="expand-hint">Toca para ver</div>
+  </div>
 
-    <div class="item">
-      <video src="Fotos/Yenia 4.mp4" controls playsinline></video>
+  <div class="item" data-type="video" data-src="Fotos/Yenia 4.mp4">
+    <video src="Fotos/Yenia 4.mp4" playsinline muted preload="metadata"></video>
+    <div class="play-badge">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
     </div>
+    <div class="expand-hint">Toca para ver</div>
+  </div>
 
-    <div class="item">
-      <img src="Fotos/Yenia 1.jpg" alt="Foto 5">
-    </div>
-    
-    <div class="item">
-      <img src="Fotos/Yenia 2.jpg" alt="Foto 5">
-    </div>
+  <div class="item" data-type="image" data-src="Fotos/Yenia 1.jpg">
+    <img src="Fotos/Yenia 1.jpg" alt="Yenia — foto 1" loading="lazy">
+    <div class="expand-hint">Toca para ver</div>
+  </div>
 
-    <div class="item">
-      <img src="Fotos/Yenia 3.jpg" alt="Foto 5">
-    </div>
+  <div class="item" data-type="image" data-src="Fotos/Yenia 2.jpg">
+    <img src="Fotos/Yenia 2.jpg" alt="Yenia — foto 2" loading="lazy">
+    <div class="expand-hint">Toca para ver</div>
+  </div>
 
-    <div class="item">
-      <img src="Fotos/Yenia 4.jpg" alt="Foto 5">
-    </div>
+  <div class="item" data-type="image" data-src="Fotos/Yenia 3.jpg">
+    <img src="Fotos/Yenia 3.jpg" alt="Yenia — foto 3" loading="lazy">
+    <div class="expand-hint">Toca para ver</div>
+  </div>
 
+  <div class="item" data-type="image" data-src="Fotos/Yenia 4.jpg">
+    <img src="Fotos/Yenia 4.jpg" alt="Yenia — foto 4" loading="lazy">
+    <div class="expand-hint">Toca para ver</div>
+  </div>
+</main>
+
+<footer>Solo para ti · uso personal</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content" id="lightboxContent">
+    <button class="lb-close" id="lbClose" aria-label="Cerrar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button class="lb-prev" id="lbPrev" aria-label="Anterior">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lb-next" id="lbNext" aria-label="Siguiente">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div id="lbMedia"></div>
+  </div>
+  <div class="lb-counter" id="lbCounter"></div>
 </div>
+
+<script>
+  const items = Array.from(document.querySelectorAll('.item'));
+  const lightbox = document.getElementById('lightbox');
+  const lbMedia = document.getElementById('lbMedia');
+  const lbCounter = document.getElementById('lbCounter');
+  let currentIndex = 0;
+
+  function renderMedia(index){
+    const el = items[index];
+    const type = el.dataset.type;
+    const src = el.dataset.src;
+    lbMedia.innerHTML = '';
+
+    if(type === 'video'){
+      const video = document.createElement('video');
+      video.src = src;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      lbMedia.appendChild(video);
+    } else {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = el.querySelector('img')?.alt || '';
+      lbMedia.appendChild(img);
+    }
+    lbCounter.textContent = (index + 1) + ' / ' + items.length;
+  }
+
+  function openLightbox(index){
+    currentIndex = index;
+    renderMedia(currentIndex);
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lbMedia.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  function showNext(delta){
+    currentIndex = (currentIndex + delta + items.length) % items.length;
+    renderMedia(currentIndex);
+  }
+
+  items.forEach((el, i) => {
+    el.addEventListener('click', () => openLightbox(i));
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', () => showNext(-1));
+  document.getElementById('lbNext').addEventListener('click', () => showNext(1));
+
+  lightbox.addEventListener('click', (e) => {
+    if(e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(!lightbox.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') showNext(-1);
+    if(e.key === 'ArrowRight') showNext(1);
+  });
+
+  // Deslizar con el dedo para pasar de una imagen a otra en el visor
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+  }, { passive: true });
+
+  lightbox.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(diff) > 50){
+      showNext(diff < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+</script>
 
 </body>
 </html>
