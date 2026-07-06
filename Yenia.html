@@ -2,238 +2,128 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="Galería multimedia profesional de Brisa Soledad Barrios">
-<meta name="theme-color" content="#0f0f0f">
-<title>Brisa Soledad Barrios | Galería</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brisa Soledad Barrios la mas Putita</title>
 <style>
-  :root{
-    --bg:#0b0b0d;
-    --bg-elev:#161618;
-    --accent:#e879f9;
-    --accent-2:#7c3aed;
-    --text:#f5f5f5;
-    --text-dim:#a1a1aa;
-    --radius:18px;
-    --shadow:0 10px 30px rgba(0,0,0,.55);
+  /* Reset de márgenes y box-sizing */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
-    background:radial-gradient(circle at top,#1a1a1f,#0b0b0d 60%);
-    color:var(--text);
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:24px 16px 60px;
+
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: #0f0f0f;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
   }
-  header{
-    width:100%;
-    max-width:520px;
-    text-align:center;
-    margin-bottom:28px;
+
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #f5f5f5;
+    letter-spacing: 1px;
   }
-  .avatar-ring{
-    width:88px;height:88px;
-    margin:0 auto 14px;
-    border-radius:50%;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex;align-items:center;justify-content:center;
-    font-size:2rem;
-    box-shadow:var(--shadow);
+
+  .subtitle {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 25px;
   }
-  h1{
-    font-size:1.6rem;
-    font-weight:700;
-    letter-spacing:.5px;
-    color:var(--text);
-    margin-bottom:6px;
+
+  .gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 500px;
   }
-  .subtitle{
-    font-size:.95rem;
-    color:var(--text-dim);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
+
+  .item {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #222;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  .subtitle .badge{
-    background:var(--bg-elev);
-    padding:4px 10px;
-    border-radius:20px;
-    font-size:.8rem;
-    color:var(--accent);
-    border:1px solid rgba(232,121,249,.25);
+
+  .item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
   }
-  nav.tabs{
-    display:flex;
-    gap:8px;
-    margin-top:18px;
-    background:var(--bg-elev);
-    padding:6px;
-    border-radius:14px;
-    width:100%;
+
+  img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
-  nav.tabs button{
-    flex:1;
-    background:transparent;
-    border:none;
-    color:var(--text-dim);
-    font-size:.85rem;
-    padding:8px 0;
-    border-radius:10px;
-    cursor:pointer;
-    transition:.25s;
-    font-weight:600;
-  }
-  nav.tabs button.active{
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#fff;
-  }
-  main{
-    width:100%;
-    max-width:520px;
-  }
-  .gallery{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-  }
-  .item{
-    position:relative;
-    aspect-ratio:9/16;
-    background:var(--bg-elev);
-    border-radius:var(--radius);
-    overflow:hidden;
-    box-shadow:var(--shadow);
-    transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
-  }
-  .item:active{transform:scale(.97);}
-  .item.wide{grid-column:span 2;}
-  .item img,.item video{
-    width:100%;height:100%;
-    object-fit:cover;
-    display:block;
-  }
-  .item .overlay{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 40%);
-    opacity:0;
-    transition:opacity .3s;
-    display:flex;
-    align-items:flex-end;
-    padding:10px;
-    font-size:.75rem;
-    color:#fff;
-    font-weight:600;
-  }
-  .item:hover .overlay{opacity:1;}
-  .play-icon{
-    position:absolute;
-    top:10px;right:10px;
-    background:rgba(0,0,0,.5);
-    backdrop-filter:blur(4px);
-    border-radius:50%;
-    width:30px;height:30px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:.9rem;
-  }
-  footer{
-    margin-top:40px;
-    text-align:center;
-    color:var(--text-dim);
-    font-size:.78rem;
-  }
-  footer a{color:var(--accent);text-decoration:none;}
-  @media (max-width:400px){
-    h1{font-size:1.3rem;}
-    .subtitle{font-size:.85rem;}
-    .gallery{gap:10px;}
-  }
-  @media (min-width:600px){
-    .gallery{grid-template-columns:repeat(3,1fr);}
+
+  /* Adaptación para móviles pequeños */
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 1.4rem;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+    }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="avatar-ring">📸</div>
-  <h1>Brisa Soledad Barrios</h1>
-  <div class="subtitle">
-    <span class="badge">👁️ 215,000 visitas</span>
-  </div>
-  <nav class="tabs">
-    <button class="active" data-filter="all">Todo</button>
-    <button data-filter="video">Videos</button>
-    <button data-filter="image">Fotos</button>
-  </nav>
-</header>
+<h1>📸 Yudaily Diaz</h1>
+<div class="subtitle">215 000 visitas 👁️</div>
 
-<main>
-  <section class="gallery" id="gallery">
+<div class="gallery">
 
-    <div class="item wide" data-type="video">
-      <video src="Fotos/Peggi 5.mp4" controls playsinline preload="metadata"></video>
-      <span class="play-icon">▶</span>
-      <div class="overlay">Video 1</div>
+    <style>
+    .video-correcto {
+    transform: rotate(180deg);
+    /* Hace que los controles no roten */
+    transform-origin: center;
+    }
+    .video-correcto::-webkit-media-controls-panel {
+    transform: rotate(180deg);
+    }
+    </style>
+
+    <div class="item">
+      <video src="Fotos/Yenia 5.mp4" controls playsinline></video>
     </div>
 
-    <div class="item wide" data-type="video">
-      <video src="Fotos/Peggi 4.mp4" controls playsinline preload="metadata"></video>
-      <span class="play-icon">▶</span>
-      <div class="overlay">Video 2</div>
+    <div class="item">
+      <video src="Fotos/Yenia 4.mp4" controls playsinline></video>
     </div>
 
-    <div class="item" data-type="image">
-      <img src="Fotos/Peggi 1.jpg" alt="Foto 1" loading="lazy">
-      <div class="overlay">Foto 1</div>
+    <div class="item">
+      <img src="Fotos/Yenia 1.jpg" alt="Foto 5">
+    </div>
+    
+    <div class="item">
+      <img src="Fotos/Yenia 2.jpg" alt="Foto 5">
     </div>
 
-    <div class="item" data-type="image">
-      <img src="Fotos/Peggi 2.jpg" alt="Foto 2" loading="lazy">
-      <div class="overlay">Foto 2</div>
+    <div class="item">
+      <img src="Fotos/Yenia 3.jpg" alt="Foto 5">
     </div>
 
-    <div class="item" data-type="image">
-      <img src="Fotos/Peggi 3.jpg" alt="Foto 3" loading="lazy">
-      <div class="overlay">Foto 3</div>
+    <div class="item">
+      <img src="Fotos/Yenia 4.jpg" alt="Foto 5">
     </div>
 
-    <div class="item" data-type="image">
-      <img src="Fotos/Peggi 4.jpg" alt="Foto 4" loading="lazy">
-      <div class="overlay">Foto 4</div>
-    </div>
-
-  </section>
-</main>
-
-<footer>
-  Diseño renovado &middot; <a href="#">brisasoledad.com</a>
-</footer>
-
-<script>
-  const buttons = document.querySelectorAll('.tabs button');
-  const items = document.querySelectorAll('.item');
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      items.forEach(item => {
-        if(filter === 'all' || item.dataset.type === filter){
-          item.style.display = '';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-    });
-  });
-</script>
+</div>
 
 </body>
 </html>
